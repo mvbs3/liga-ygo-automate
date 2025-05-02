@@ -123,10 +123,3 @@ def test_pesquisar_carta(browser, carta):
         print(f"Erro ao pesquisar a carta {carta}: {e}")
         assert False
 
-def pytest_sessionfinish(session, exitstatus):
-    relatorio = {
-        "encontradas": cartas_encontradas,
-        "nao_encontradas": cartas_nao_encontradas
-    }
-    with open("resultado_cartas.json", "w", encoding="utf-8") as f:
-        json.dump(relatorio, f, indent=2, ensure_ascii=False)
