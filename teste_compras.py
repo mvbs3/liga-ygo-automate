@@ -8,8 +8,9 @@ import os
 import pytesseract
 from PIL import Image
 import io
-
-
+import json 
+cartas_encontradas = []
+cartas_nao_encontradas = []
 def extrair_preco_com_ocr(elemento):
     png = elemento.screenshot_as_png
     imagem = Image.open(io.BytesIO(png))
@@ -111,11 +112,21 @@ def test_pesquisar_carta(browser, carta):
                 preco_elemento = browser.find_element(By.CLASS_NAME, "new-price")
                 preco = extrair_preco_com_ocr(preco_elemento)
                 print(f"Preço da carta '{carta}': {preco}")
+                cartas_encontradas.append((carta, preco))
                 assert True
             except:
                 print(f"Preço não encontrado visualmente para: {carta}")
+                cartas_nao_encontradas.append(carta)
                 assert False
-
+    
     except Exception as e:
         print(f"Erro ao pesquisar a carta {carta}: {e}")
         assert False
+
+def pytest_sessionfinish(session, exitstatus):
+    relatorio = {
+        "encontradas": cartas_encontradas,
+        "nao_encontradas": cartas_nao_encontradas
+    }
+    with open("resultado_cartas.json", "w", encoding="utf-8") as f:
+        json.dump(relatorio, f, indent=2, ensure_ascii=False)

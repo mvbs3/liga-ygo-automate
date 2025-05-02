@@ -41,6 +41,16 @@ jobs:
         else
           echo "success=true" >> $GITHUB_OUTPUT
         fi
+    - name: Create email body
+      id: email_content
+      run: |
+        echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "✅ Cartas encontradas:" >> $GITHUB_OUTPUT
+          jq -r '.encontradas[] | "- \(.0): R$ \(.1)"' resultado_cartas.json >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "❌ Cartas não encontradas:" >> $GITHUB_OUTPUT
+          jq -r '.nao_encontradas[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Send success email
       if: steps.check.outputs.success == 'true'
@@ -53,7 +63,7 @@ jobs:
         subject: "✅ Todas as cartas estão disponíveis!"
         to: marcelobs.victor@gmail.com
         from: ${{ secrets.EMAIL_USERNAME }}
-        body: "Todas as cartas foram encontradas com sucesso na loja."
+        body: ${{ steps.email_content.outputs.body }}
 
     - name: Send failure email
       if: steps.check.outputs.success == 'false'
@@ -66,4 +76,4 @@ jobs:
         subject: "❌ Carta(s) não encontradas"
         to: marcelo.victo@gmail.com
         from: ${{ secrets.EMAIL_USERNAME }}
-        body: "Alguma carta não está em estoque ainda. Veja o relatório no GitHub Actions."
+        body: ${{ steps.email_content.outputs.body }}
