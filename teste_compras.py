@@ -11,7 +11,7 @@ import io
 import json
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium_stealth import stealth
 cartas_encontradas = []
 cartas_nao_encontradas = []
 
@@ -24,16 +24,40 @@ def extrair_preco_com_ocr(elemento):
 def espera_elemento(browser, by, value, timeout=5):
     return WebDriverWait(browser, timeout).until(EC.presence_of_element_located((by, value)))
 
-@pytest.fixture
-def browser():
+def setup_browser():
     options = Options()
-    options.add_argument('--headless')  
+    options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option("useAutomationExtension", False)
+
     driver = webdriver.Chrome(options=options)
+
+    stealth(driver,
+        languages=["pt-BR", "pt"],
+        vendor="Google Inc.",
+        platform="Win32",
+        webgl_vendor="Intel Inc.",
+        renderer="Intel Iris OpenGL",
+        fix_hairline=True,
+    )
+
+    return driver
+
+@pytest.fixture
+def browser():
+    # options = Options()
+    # options.add_argument('--headless')  
+    # options.add_argument('--disable-gpu')
+    # options.add_argument('--no-sandbox')
+    # driver = webdriver.Chrome(options=options)
+    # yield driver
+    # driver.quit()
+    driver = setup_browser()
     yield driver
     driver.quit()
-
 def get_cartas():
     cartas = []
     pasta = "lista_de_compras"
