@@ -78,6 +78,6 @@ jobs:
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "❌ Carta(s) não encontradas"
-        to: marcelo.victo@gmail.com
+        to: marcelobs.victo@gmail.com
         from: ${{ secrets.EMAIL_USERNAME }}
         body: ${{ steps.email_content.outputs.body }}
