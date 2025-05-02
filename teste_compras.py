@@ -96,17 +96,16 @@ def test_pesquisar_carta(browser, carta):
             print("Já estou na página da carta.")
             pagina_carta = True
         if pagina_carta:
-            cards_preco = browser.find_elements(By.CLASS_NAME, "store")
-            print(cards_preco[0].get_attribute("outerHTML"))
-            card = cards_preco[0]
+            #cards_preco = browser.find_elements(By.CLASS_NAME, "store")
+            #print(cards_preco[0].get_attribute("outerHTML"))
+            #card = cards_preco[0]
+            # Captura e exibe o preço com OCR
             try:
-                preco_div = card.find_element(By.CLASS_NAME, "price")
-                outer_html = preco_div.get_attribute("outerHTML")
-                print(f"[DEBUG] OuterHTML do preço:\n{outer_html}\n")
-            except Exception as e:
-                print(f"Erro ao tentar acessar o preço: {e}")
-
-
+                preco_elemento = browser.find_element(By.CLASS_NAME, "new-price")
+                preco = extrair_preco_com_ocr(preco_elemento)
+                print(f"Preço da carta '{carta}': {preco}")
+            except:
+                print(f"Preço não encontrado visualmente para: {carta}")
 
 
         time.sleep(5)
