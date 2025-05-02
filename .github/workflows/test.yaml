@@ -32,7 +32,9 @@ jobs:
     - name: Run tests
       run: |
         pytest teste_compras.py > result.log || echo "Testes falharam"
-
+    - name: checking logs
+      run: |
+            cat result.log
     - name: Check if all tests passed
       id: check
       run: |
