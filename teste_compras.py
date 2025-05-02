@@ -8,15 +8,22 @@ import os
 import pytesseract
 from PIL import Image
 import io
-import json 
+import json
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 cartas_encontradas = []
 cartas_nao_encontradas = []
+
 def extrair_preco_com_ocr(elemento):
     png = elemento.screenshot_as_png
     imagem = Image.open(io.BytesIO(png))
     preco = pytesseract.image_to_string(imagem, config='--psm 7')
     return preco.strip()
 
+def espera_elemento(browser, by, value, timeout=10):
+    """Função para esperar um elemento estar presente na página"""
+    return WebDriverWait(browser, timeout).until(EC.presence_of_element_located((by, value)))
 
 @pytest.fixture
 def browser():
@@ -28,7 +35,6 @@ def browser():
     yield driver
     driver.quit()
 
-
 def get_cartas():
     cartas = []
     pasta = "lista_de_compras"
@@ -39,16 +45,15 @@ def get_cartas():
                 cartas += [linha.strip() for linha in f if linha.strip()]
     return cartas
 
-
 @pytest.mark.parametrize("carta", get_cartas())
 def test_pesquisar_carta(browser, carta):
     browser.get("https://www.ligayugioh.com.br/")
-    time.sleep(2)
+    espera_elemento(browser, By.ID, "mainsearch")
 
     try:
         # Fecha banner promocional se existir
         try:
-            campanha = browser.find_element(By.ID, "campanha-del-1")
+            campanha = espera_elemento(browser, By.ID, "campanha-del-1")
             campanha.click()
             time.sleep(1)
         except:
@@ -56,49 +61,49 @@ def test_pesquisar_carta(browser, carta):
 
         # Fecha banner de cookies se aparecer
         try:
-            cookie_banner = browser.find_element(By.CLASS_NAME, "lgpd-button")
+            cookie_banner = espera_elemento(browser, By.CLASS_NAME, "lgpd-button")
             cookie_banner.click()
             time.sleep(1)
         except:
             pass
 
         # Pesquisa a carta
-        pesquisa = browser.find_element(By.ID, "mainsearch")
+        pesquisa = espera_elemento(browser, By.ID, "mainsearch")
         pesquisa.clear()
         pesquisa.send_keys(carta)
         pesquisa.send_keys(Keys.ENTER)
-        time.sleep(3)
 
+        time.sleep(3)
         # Verifica se há resultados com classe 'box p25'
         boxes = browser.find_elements(By.CLASS_NAME, "box")
         resultados_encontrados = False
         pagina_carta = False
 
         for box in boxes:
+            try:
+                link = box.find_element(By.CSS_SELECTOR, ".mtg-name a")
                 try:
-                    link = box.find_element(By.CSS_SELECTOR, ".mtg-name a")
-                    try:
-                        link_aux = box.find_element(By.CSS_SELECTOR, ".mtg-name-aux a")
-                        nome_link_aux = link_aux.get_attribute("innerHTML").strip()
-                    except:
-                        nome_link_aux = ""
-                    nome_link = link.get_attribute("innerHTML").strip()
-                    if carta.lower() == nome_link.lower() or carta.lower() == nome_link_aux.lower():
-                        print(f"Carta encontrada: {nome_link}")
-                        print(link.get_attribute("href"))
-                        resultados_encontrados = True
-
-                        link.click()
-                        print("Redirecionado para a página da carta.")
-                        pagina_carta = True
-                        time.sleep(2)
-                        break
+                    link_aux = box.find_element(By.CSS_SELECTOR, ".mtg-name-aux a")
+                    nome_link_aux = link_aux.get_attribute("innerHTML").strip()
                 except:
-                    continue
+                    nome_link_aux = ""
+                nome_link = link.get_attribute("innerHTML").strip()
+                if carta.lower() == nome_link.lower() or carta.lower() == nome_link_aux.lower():
+                    print(f"Carta encontrada: {nome_link}")
+                    print(link.get_attribute("href"))
+                    resultados_encontrados = True
+
+                    link.click()
+                    print("Redirecionado para a página da carta.")
+                    espera_elemento(browser, By.CLASS_NAME, "new-price")  # Espera o preço carregar
+                    pagina_carta = True
+                    break
+            except:
+                continue
 
         if not resultados_encontrados:
             try:
-                erro = browser.find_element(By.CLASS_NAME, "alertaErro")
+                erro = espera_elemento(browser, By.CLASS_NAME, "alertaErro")
                 if erro:
                     print("Nenhuma carta encontrada.")
                     assert False
@@ -109,7 +114,7 @@ def test_pesquisar_carta(browser, carta):
 
         if pagina_carta:
             try:
-                preco_elemento = browser.find_element(By.CLASS_NAME, "new-price")
+                preco_elemento = espera_elemento(browser, By.CLASS_NAME, "new-price")
                 preco = extrair_preco_com_ocr(preco_elemento)
                 print(f"Preço da carta '{carta}': {preco}")
                 cartas_encontradas.append((carta, preco))
@@ -118,8 +123,7 @@ def test_pesquisar_carta(browser, carta):
                 print(f"Preço não encontrado visualmente para: {carta}")
                 cartas_nao_encontradas.append(carta)
                 assert False
-    
+
     except Exception as e:
         print(f"Erro ao pesquisar a carta {carta}: {e}")
         assert False
-
