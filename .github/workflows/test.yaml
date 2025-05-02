@@ -1,0 +1,60 @@
+name: Run Tests Daily
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Roda todo dia às 12h UTC (9h BRT)
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        pytest teste_compras.py > result.log || echo "Testes falharam"
+
+    - name: Check if all tests passed
+      id: check
+      run: |
+        if grep -q "Preço não encontrado visualmente" result.log; then
+          echo "success=false" >> $GITHUB_OUTPUT
+        else
+          echo "success=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Send success email
+      if: steps.check.outputs.success == 'true'
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "✅ Todas as cartas estão disponíveis!"
+        to: marcelobs.victor@gmail.com
+        from: ${{ secrets.EMAIL_USERNAME }}
+        body: "Todas as cartas foram encontradas com sucesso na loja."
+
+    - name: Send failure email
+      if: steps.check.outputs.success == 'false'
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "❌ Carta(s) não encontradas"
+        to: marcelo.victow@gmail.com
+        from: ${{ secrets.EMAIL_USERNAME }}
+        body: "Alguma carta não está em estoque ainda. Veja o relatório no GitHub Actions."

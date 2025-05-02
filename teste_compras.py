@@ -20,7 +20,7 @@ def extrair_preco_com_ocr(elemento):
 @pytest.fixture
 def browser():
     options = Options()
-    # options.add_argument('--headless')  # Ative se quiser rodar sem abrir o navegador
+    options.add_argument('--headless')  
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(options=options)
