@@ -48,7 +48,7 @@ def get_cartas():
 @pytest.mark.parametrize("carta", get_cartas())
 def test_pesquisar_carta(browser, carta):
     browser.get("https://www.ligayugioh.com.br/")
-    espera_elemento(browser, By.ID, "mainsearch")
+    #espera_elemento(browser, By.ID, "mainsearch")
 
     try:
         # Fecha banner promocional se existir
