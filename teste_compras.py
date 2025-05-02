@@ -79,7 +79,7 @@ def test_pesquisar_carta(browser, carta):
 
                     print("Redirecionado para a página da carta.")
                     pagina_carta = True
-                    time.sleep(5)
+                    time.sleep(2)
                     break  # Interrompe o loop após clicar
             except Exception as e:
                 print(f"Erro ao clicar no link: {e}")
@@ -104,11 +104,11 @@ def test_pesquisar_carta(browser, carta):
                 preco_elemento = browser.find_element(By.CLASS_NAME, "new-price")
                 preco = extrair_preco_com_ocr(preco_elemento)
                 print(f"Preço da carta '{carta}': {preco}")
+                assert True
             except:
                 print(f"Preço não encontrado visualmente para: {carta}")
+                assert False
 
-
-        time.sleep(5)
         assert True
     except Exception as e:
         print(f"Erro ao pesquisar a carta {carta}: {e}")
