@@ -20,10 +20,15 @@ jobs:
 
     #- name: Install dependencies
     #  run: pip install -r requirements.txt
-    - name: Install latest compatible dependencies (ignora travas)
-      run: |
-        pip install --upgrade --no-deps $(awk '{print $1}' requirements.txt)
+    #- name: Install latest compatible dependencies (ignora travas)
+    #  run: |
+    #    pip install --upgrade --no-deps $(awk '{print $1}' requirements.txt)
 
+    - name: Instalar dependências (últimas versões)
+      run: |
+        pip install --upgrade pip
+        pip install --upgrade $(sed 's/[<=>].*//' requirements.txt)
+        
     - name: Run tests
       run: |
         pytest teste_compras.py > result.log || echo "Testes falharam"
