@@ -6,6 +6,16 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import pytesseract
+from PIL import Image
+import io
+import os
+
+def extrair_preco_com_ocr(elemento):
+    png = elemento.screenshot_as_png
+    imagem = Image.open(io.BytesIO(png))
+    preco = pytesseract.image_to_string(imagem, config='--psm 7')
+    return preco.strip()
 
 @pytest.fixture
 def browser():
@@ -69,7 +79,7 @@ def test_pesquisar_carta(browser, carta):
 
                     print("Redirecionado para a página da carta.")
                     pagina_carta = True
-                    time.sleep(3)
+                    time.sleep(5)
                     break  # Interrompe o loop após clicar
             except Exception as e:
                 print(f"Erro ao clicar no link: {e}")
@@ -88,7 +98,14 @@ def test_pesquisar_carta(browser, carta):
         if pagina_carta:
             cards_preco = browser.find_elements(By.CLASS_NAME, "store")
             print(cards_preco[0].get_attribute("outerHTML"))
-            
+            card = cards_preco[0]
+            try:
+                preco_div = card.find_element(By.CLASS_NAME, "price")
+                outer_html = preco_div.get_attribute("outerHTML")
+                print(f"[DEBUG] OuterHTML do preço:\n{outer_html}\n")
+            except Exception as e:
+                print(f"Erro ao tentar acessar o preço: {e}")
+
 
 
 
