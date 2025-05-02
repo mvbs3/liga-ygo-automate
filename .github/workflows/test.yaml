@@ -1,6 +1,8 @@
 name: Run Tests Daily
 
 on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
   schedule:
     - cron: '0 12 * * *'  # Roda todo dia às 12h UTC (9h BRT)
