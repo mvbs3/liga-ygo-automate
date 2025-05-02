@@ -10,3 +10,5 @@ Instalar requirements
 
 rodar programa:
         pytest teste_compras.py
+        #ou usar tag -s para ver prints
+        
