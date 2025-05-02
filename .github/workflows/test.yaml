@@ -37,6 +37,12 @@ jobs:
     - name: checking logs
       run: |
             cat result.log
+    - name: Upload HTML para debug
+      uses: actions/upload-artifact@v4
+      with:
+        name: debug-html
+        path: page_debug.html
+
     - name: Check if all tests passed
       id: check
       run: |

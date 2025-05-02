@@ -21,7 +21,7 @@ def extrair_preco_com_ocr(elemento):
     preco = pytesseract.image_to_string(imagem, config='--psm 7')
     return preco.strip()
 
-def espera_elemento(browser, by, value, timeout=180):
+def espera_elemento(browser, by, value, timeout=5):
     return WebDriverWait(browser, timeout).until(EC.presence_of_element_located((by, value)))
 
 @pytest.fixture
@@ -65,6 +65,9 @@ def test_pesquisar_carta(browser, carta):
             time.sleep(1)
         except:
             pass
+
+        with open("page_debug.html", "w", encoding="utf-8") as f:
+            f.write(browser.page_source)
 
         # Pesquisa a carta
         pesquisa = espera_elemento(browser, By.ID, "mainsearch")
