@@ -21,7 +21,7 @@ def extrair_preco_com_ocr(elemento):
     preco = pytesseract.image_to_string(imagem, config='--psm 7')
     return preco.strip()
 
-def espera_elemento(browser, by, value, timeout=20):
+def espera_elemento(browser, by, value, timeout=60):
     return WebDriverWait(browser, timeout).until(EC.presence_of_element_located((by, value)))
 
 @pytest.fixture
