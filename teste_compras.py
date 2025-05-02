@@ -69,8 +69,10 @@ def test_pesquisar_carta(browser, carta):
         for box in boxes:
             try:
                 link = box.find_element(By.CSS_SELECTOR, ".mtg-name a")
+                link_aux = box.find_element(By.CSS_SELECTOR, ".mtg-name-aux a")
                 nome_link = link.get_attribute("innerHTML").strip()
-                if carta.lower() == nome_link.lower():
+                nome_link_aux = link_aux.get_attribute("innerHTML").strip() 
+                if carta.lower() == nome_link.lower() or carta.lower() == nome_link_aux.lower():
                     print(f"Carta encontrada: {nome_link}")
                     print(link.get_attribute("href"))
                     resultados_encontrados = True
