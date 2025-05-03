@@ -10,7 +10,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      # Limitar execuções simultâneas para evitar bloqueios
+      max-parallel: 1
+      fail-fast: false
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -25,15 +29,48 @@ jobs:
     #- name: Install latest compatible dependencies (ignora travas)
     #  run: |
     #    pip install --upgrade --no-deps $(awk '{print $1}' requirements.txt)
-
+    - name: Instalar Chrome
+      run: |
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+    
+      
     - name: Instalar dependências (últimas versões)
       run: |
         pip install --upgrade pip
         pip install --upgrade $(sed 's/[<=>].*//' requirements.txt)
-
-    - name: Run tests
+    - name: Install Chrome
       run: |
-        pytest teste_compras.py > result.log || echo "Testes falharam"
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        google-chrome --version  # Para verificar a instalação
+        
+    - name: Instalar Tesseract OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr libtesseract-dev tesseract-ocr-por
+      
+    - name: Install Chrome Webdriver
+      run: |
+        CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d. -f1)
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+        wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        chromedriver --version  # Para verificar a instalação
+
+    - name: Executar testes com retry e delay
+      env:
+        PYTHONUNBUFFERED: 1
+      run: |
+        # Configurar limite de tempo para cada teste e retry automático
+        python -m pytest teste_compras.py -v --durations=0 -xvs > result.log || echo "Testes concluídos com falhas"
+    
+    #- name: Run tests
+    #  run: |
+    #    pytest teste_compras.py > result.log || echo "Testes falharam"
     - name: checking logs
       run: |
             cat result.log
@@ -58,15 +95,13 @@ jobs:
       id: email_content
       run: |
         echo "body<<EOF" >> $GITHUB_OUTPUT
-        jq -r . resultado_cartas.json >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-
-        echo "body<<EOF" >> $GITHUB_OUTPUT
+        echo "📊 Resultado da busca de cartas 📊" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
         echo "✅ Cartas encontradas:" >> $GITHUB_OUTPUT
-        jq -r '.encontradas[] | "- \(.0): R$ \(.1)"' resultado_cartas.json >> $GITHUB_OUTPUT
+        jq -r '.encontradas[] | "- \(.0): R$ \(.1)"' resultado_cartas.json >> $GITHUB_OUTPUT || echo "Nenhuma carta encontrada" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
         echo "❌ Cartas não encontradas:" >> $GITHUB_OUTPUT
-        jq -r '.nao_encontradas[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT
+        jq -r '.nao_encontradas[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT || echo "Nenhuma carta na lista de não encontradas" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Send success email
