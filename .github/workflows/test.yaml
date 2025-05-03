@@ -78,7 +78,7 @@ jobs:
         PYTHONUNBUFFERED: 1
       run: |
         # Configurar limite de tempo para cada teste e retry automático
-        python -m pytest teste_compras.py -v --durations=0 -xvs > result.log || echo "Testes concluídos com falhas"
+        python -m pytest teste_compras.py -v --durations=0 > result.log || echo "Testes concluídos com falhas"
     
     #- name: Run tests
     #  run: |
