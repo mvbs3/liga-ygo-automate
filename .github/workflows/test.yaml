@@ -103,7 +103,7 @@
       - name: Verificar conteúdo do resultado_cartas.json
         run: cat resultado_cartas.json
       
-        name: Create email body
+      - name: Create email body
         id: email_content
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
