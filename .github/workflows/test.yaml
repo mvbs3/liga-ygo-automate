@@ -58,17 +58,8 @@ jobs:
         CHROME_VERSION=$(google-chrome --version)
         echo "Versão do Chrome detectada: ${CHROME_VERSION}"
         
-        # Extrair apenas o número da versão principal
-        CHROME_MAJOR=$(echo "$CHROME_VERSION" | awk '{print $3}' | cut -d. -f1)
-        echo "Versão principal do Chrome: ${CHROME_MAJOR}"
-        
-        echo "Buscando versão compatível do ChromeDriver..."
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR}")
-        
-        if [ -z "$CHROMEDRIVER_VERSION" ]; then
-          echo "Não foi possível encontrar a versão do ChromeDriver. Usando a última versão estável."
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-        fi
+        echo "Forçando uso da última versão estável do ChromeDriver..."
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
         
         echo "Versão do ChromeDriver a ser instalada: ${CHROMEDRIVER_VERSION}"
         echo "Baixando ChromeDriver..."
