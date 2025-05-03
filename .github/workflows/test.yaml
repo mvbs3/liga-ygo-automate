@@ -109,13 +109,23 @@ jobs:
         echo "body<<EOF" >> $GITHUB_OUTPUT
         echo "📊 Resultado da busca de cartas 📊" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
+
         echo "✅ Cartas encontradas:" >> $GITHUB_OUTPUT
-        jq -r '.encontradas[] | "- \(.0): R$ \(.1)"' resultado_cartas.json >> $GITHUB_OUTPUT || echo "Nenhuma carta encontrada" >> $GITHUB_OUTPUT
+        if [ $(jq '.encontradas | length' resultado_cartas.json) -gt 0 ]; then
+          jq -r '.encontradas[] | "- \.[0]: \.[1]"' resultado_cartas.json \
+            | sed 's/RS/R$/g' >> $GITHUB_OUTPUT
+        else
+          echo "- Nenhuma carta encontrada" >> $GITHUB_OUTPUT
+        fi
+
         echo "" >> $GITHUB_OUTPUT
         echo "❌ Cartas não encontradas:" >> $GITHUB_OUTPUT
-        jq -r '.nao_encontradas[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT || echo "Nenhuma carta na lista de não encontradas" >> $GITHUB_OUTPUT
+        if [ $(jq '.nao_encontradas | length' resultado_cartas.json) -gt 0 ]; then
+          jq -r '.nao_encontradas[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT
+        else
+          echo "- Nenhuma carta não encontrada" >> $GITHUB_OUTPUT
+        fi
         echo "EOF" >> $GITHUB_OUTPUT
-
     - name: Send success email
       if: steps.check.outputs.success == 'true'
       uses: dawidd6/action-send-mail@v3
