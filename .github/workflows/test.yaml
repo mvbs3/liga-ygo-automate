@@ -1,153 +1,152 @@
-name: Run Tests Daily
+  name: Run Tests Daily
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
-  schedule:
-    - cron: '0 12 * * *'  # Roda todo dia às 12h UTC (9h BRT)
+  on:
+    push:
+      branches: [ "main" ]
+    workflow_dispatch:
+    schedule:
+      - cron: '0 12 * * *'  # Roda todo dia às 12h UTC (9h BRT)
 
-jobs:
-  test:
-    runs-on: self-hosted
-    strategy:
-      # Limitar execuções simultâneas para evitar bloqueios
-      max-parallel: 1
-      fail-fast: false
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-
-    #- name: Install dependencies
-    #  run: pip install -r requirements.txt
-    #- name: Install latest compatible dependencies (ignora travas)
-    #  run: |
-    #    pip install --upgrade --no-deps $(awk '{print $1}' requirements.txt)
-    - name: Instalar Chrome
-      run: |
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
-    
+  jobs:
+    test:
+      runs-on: self-hosted
+      strategy:
+        # Limitar execuções simultâneas para evitar bloqueios
+        max-parallel: 1
+        fail-fast: false
       
-    - name: Instalar dependências (últimas versões)
-      run: |
-        pip install --upgrade pip
-        pip install --upgrade $(sed 's/[<=>].*//' requirements.txt)
-    - name: Install Chrome
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
-        google-chrome --version  # Para verificar a instalação
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      #- name: Install dependencies
+      #  run: pip install -r requirements.txt
+      #- name: Install latest compatible dependencies (ignora travas)
+      #  run: |
+      #    pip install --upgrade --no-deps $(awk '{print $1}' requirements.txt)
+      - name: Instalar Chrome
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+      
         
-    - name: Instalar Tesseract OCR
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y tesseract-ocr libtesseract-dev tesseract-ocr-por
-    
-    - name: Instalar ChromeDriver compatível com Chrome
-      run: |
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-        echo "Versão do Chrome detectada: $CHROME_VERSION"
+      - name: Instalar dependências (últimas versões)
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade $(sed 's/[<=>].*//' requirements.txt)
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          google-chrome --version  # Para verificar a instalação
+          
+      - name: Instalar Tesseract OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr libtesseract-dev tesseract-ocr-por
+      
+      - name: Instalar ChromeDriver compatível com Chrome
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
+          echo "Versão do Chrome detectada: $CHROME_VERSION"
 
-        # Baixar versão exata do ChromeDriver compatível com o Chrome instalado
-        CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" \
-          | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url')
+          # Baixar versão exata do ChromeDriver compatível com o Chrome instalado
+          CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" \
+            | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url')
 
-        if [ -z "$CHROMEDRIVER_VERSION" ]; then
-          echo "Não foi possível detectar uma URL válida para o ChromeDriver."
-          exit 1
-        fi
+          if [ -z "$CHROMEDRIVER_VERSION" ]; then
+            echo "Não foi possível detectar uma URL válida para o ChromeDriver."
+            exit 1
+          fi
 
-        echo "Baixando ChromeDriver de: $CHROMEDRIVER_VERSION"
-        wget -O chromedriver.zip "$CHROMEDRIVER_VERSION"
-        unzip -o chromedriver.zip
-        sudo mv -f chromedriver-linux64/chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
-        chromedriver --version
-        
-    - name: Executar testes com retry e delay
-      env:
-        PYTHONUNBUFFERED: 1
-      run: |
-        # Configurar limite de tempo para cada teste e retry automático
-        python -m pytest teste_compras.py -v --durations=0 > result.log || echo "Testes concluídos com falhas"
-    
-    #- name: Run tests
-    #  run: |
-    #    pytest teste_compras.py > result.log || echo "Testes falharam"
-    - name: checking logs
-      run: |
-            cat result.log
-    - name: Upload HTML para debug
-      uses: actions/upload-artifact@v4
-      with:
-        name: debug-html
-        path: page_debug.html
+          echo "Baixando ChromeDriver de: $CHROMEDRIVER_VERSION"
+          wget -O chromedriver.zip "$CHROMEDRIVER_VERSION"
+          unzip -o chromedriver.zip
+          sudo mv -f chromedriver-linux64/chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          chromedriver --version
+          
+      - name: Executar testes com retry e delay
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          # Configurar limite de tempo para cada teste e retry automático
+          python -m pytest teste_compras.py -v --durations=0 > result.log || echo "Testes concluídos com falhas"
+      
+      #- name: Run tests
+      #  run: |
+      #    pytest teste_compras.py > result.log || echo "Testes falharam"
+      - name: checking logs
+        run: |
+              cat result.log
+      - name: Upload HTML para debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-html
+          path: page_debug.html
 
-    - name: Check if all tests passed
-      id: check
-      run: |
-        if grep -q "Preço não encontrado visualmente" result.log; then
-          echo "success=false" >> $GITHUB_OUTPUT
-        else
-          echo "success=true" >> $GITHUB_OUTPUT
-        fi
-    - name: Verificar conteúdo do resultado_cartas.json
-      run: cat resultado_cartas.json
-    
-    - name: Create email body
-      id: email_content
-      run: |
-        echo "body<<EOF" >> $GITHUB_OUTPUT
-        echo "📊 Resultado da busca de cartas 📊" >> $GITHUB_OUTPUT
-        echo "" >> $GITHUB_OUTPUT
-
-        echo "✅ Cartas encontradas:" >> $GITHUB_OUTPUT
-        if [ $(jq '.encontradas | length' resultado_cartas.json) -gt 0 ]; then
-          jq -r '.encontradas[] | "- \.[0]: \.[1]"' resultado_cartas.json \
+      - name: Check if all tests passed
+        id: check
+        run: |
+          if grep -q "Preço não encontrado visualmente" result.log; then
+            echo "success=false" >> $GITHUB_OUTPUT
+          else
+            echo "success=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Verificar conteúdo do resultado_cartas.json
+        run: cat resultado_cartas.json
+      
+        name: Create email body
+        id: email_content
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "📊 Resultado da busca de cartas 📊" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "✅ Cartas encontradas:" >> $GITHUB_OUTPUT
+          if [ $(jq '.encontradas | length' resultado_cartas.json) -gt 0 ]; then
+            jq -r '.encontradas[] | "- \(.[0]): \(.[1])"' resultado_cartas.json \
             | sed 's/RS/R$/g' >> $GITHUB_OUTPUT
-        else
-          echo "- Nenhuma carta encontrada" >> $GITHUB_OUTPUT
-        fi
+          else
+            echo "- Nenhuma carta encontrada" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_OUTPUT
+          echo "❌ Cartas não encontradas:" >> $GITHUB_OUTPUT
+          if [ $(jq '.nao_encontradas | length' resultado_cartas.json) -gt 0 ]; then
+            jq -r '.nao_encontradas | unique[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT
+          else
+            echo "- Nenhuma carta não encontrada" >> $GITHUB_OUTPUT
+          fi
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+      - name: Send success email
+        if: steps.check.outputs.success == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "✅ Todas as cartas estão disponíveis!"
+          to: marcelobs.victor@gmail.com
+          from: ${{ secrets.EMAIL_USERNAME }}
+          body: ${{ steps.email_content.outputs.body }}
 
-        echo "" >> $GITHUB_OUTPUT
-        echo "❌ Cartas não encontradas:" >> $GITHUB_OUTPUT
-        if [ $(jq '.nao_encontradas | length' resultado_cartas.json) -gt 0 ]; then
-          jq -r '.nao_encontradas[] | "- \(.)"' resultado_cartas.json >> $GITHUB_OUTPUT
-        else
-          echo "- Nenhuma carta não encontrada" >> $GITHUB_OUTPUT
-        fi
-        echo "EOF" >> $GITHUB_OUTPUT
-    - name: Send success email
-      if: steps.check.outputs.success == 'true'
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "✅ Todas as cartas estão disponíveis!"
-        to: marcelobs.victor@gmail.com
-        from: ${{ secrets.EMAIL_USERNAME }}
-        body: ${{ steps.email_content.outputs.body }}
-
-    - name: Send failure email
-      if: steps.check.outputs.success == 'false'
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "❌ Carta(s) não encontradas"
-        to: marcelobs.victor@gmail.com
-        from: ${{ secrets.EMAIL_USERNAME }}
-        body: ${{ steps.email_content.outputs.body }}
+      - name: Send failure email
+        if: steps.check.outputs.success == 'false'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "❌ Carta(s) não encontradas"
+          to: marcelobs.victor@gmail.com
+          from: ${{ secrets.EMAIL_USERNAME }}
+          body: ${{ steps.email_content.outputs.body }}
