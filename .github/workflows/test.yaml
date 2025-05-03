@@ -54,13 +54,49 @@ jobs:
     
     - name: Install Chrome Webdriver
       run: |
-        CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d. -f1)
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-        wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/
-        chromedriver --version  # Para verificar a instalação
-
+        echo "Detectando versão do Chrome..."
+        CHROME_VERSION=$(google-chrome --version)
+        echo "Versão do Chrome detectada: ${CHROME_VERSION}"
+        
+        # Extrair apenas o número da versão principal
+        CHROME_MAJOR=$(echo "$CHROME_VERSION" | awk '{print $3}' | cut -d. -f1)
+        echo "Versão principal do Chrome: ${CHROME_MAJOR}"
+        
+        echo "Buscando versão compatível do ChromeDriver..."
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR}")
+        
+        if [ -z "$CHROMEDRIVER_VERSION" ]; then
+          echo "Não foi possível encontrar a versão do ChromeDriver. Usando a última versão estável."
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
+        fi
+        
+        echo "Versão do ChromeDriver a ser instalada: ${CHROMEDRIVER_VERSION}"
+        echo "Baixando ChromeDriver..."
+        wget -O chromedriver_linux64.zip "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+        
+        if [ ! -f chromedriver_linux64.zip ]; then
+          echo "Falha ao baixar o ChromeDriver. Arquivo não encontrado."
+          exit 1
+        fi
+        
+        echo "Verificando o arquivo ZIP..."
+        file chromedriver_linux64.zip
+        
+        echo "Descompactando o ChromeDriver..."
+        unzip -o chromedriver_linux64.zip
+        
+        if [ ! -f chromedriver ]; then
+          echo "Falha ao descompactar o ChromeDriver. Arquivo não encontrado."
+          exit 1
+        fi
+        
+        echo "Movendo ChromeDriver para /usr/local/bin/"
+        sudo mv -f chromedriver /usr/local/bin/
+        sudo chmod +x /usr/local/bin/chromedriver
+        
+        echo "Verificando a instalação do ChromeDriver:"
+        which chromedriver
+        chromedriver --version
     - name: Executar testes com retry e delay
       env:
         PYTHONUNBUFFERED: 1
