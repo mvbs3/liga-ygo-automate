@@ -52,42 +52,27 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y tesseract-ocr libtesseract-dev tesseract-ocr-por
     
-    - name: Install Chrome Webdriver
+    - name: Instalar ChromeDriver compatível com Chrome
       run: |
-        echo "Detectando versão do Chrome..."
-        CHROME_VERSION=$(google-chrome --version)
-        echo "Versão do Chrome detectada: ${CHROME_VERSION}"
-        
-        echo "Forçando uso da última versão estável do ChromeDriver..."
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-        
-        echo "Versão do ChromeDriver a ser instalada: ${CHROMEDRIVER_VERSION}"
-        echo "Baixando ChromeDriver..."
-        wget -O chromedriver_linux64.zip "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
-        
-        if [ ! -f chromedriver_linux64.zip ]; then
-          echo "Falha ao baixar o ChromeDriver. Arquivo não encontrado."
+        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
+        echo "Versão do Chrome detectada: $CHROME_VERSION"
+
+        # Baixar versão exata do ChromeDriver compatível com o Chrome instalado
+        CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" \
+          | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url')
+
+        if [ -z "$CHROMEDRIVER_VERSION" ]; then
+          echo "Não foi possível detectar uma URL válida para o ChromeDriver."
           exit 1
         fi
-        
-        echo "Verificando o arquivo ZIP..."
-        file chromedriver_linux64.zip
-        
-        echo "Descompactando o ChromeDriver..."
-        unzip -o chromedriver_linux64.zip
-        
-        if [ ! -f chromedriver ]; then
-          echo "Falha ao descompactar o ChromeDriver. Arquivo não encontrado."
-          exit 1
-        fi
-        
-        echo "Movendo ChromeDriver para /usr/local/bin/"
-        sudo mv -f chromedriver /usr/local/bin/
+
+        echo "Baixando ChromeDriver de: $CHROMEDRIVER_VERSION"
+        wget -O chromedriver.zip "$CHROMEDRIVER_VERSION"
+        unzip -o chromedriver.zip
+        sudo mv -f chromedriver-linux64/chromedriver /usr/local/bin/
         sudo chmod +x /usr/local/bin/chromedriver
-        
-        echo "Verificando a instalação do ChromeDriver:"
-        which chromedriver
         chromedriver --version
+        
     - name: Executar testes com retry e delay
       env:
         PYTHONUNBUFFERED: 1
