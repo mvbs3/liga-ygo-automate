@@ -1,0 +1,280 @@
+May 03 20:18:02 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Starting jenkins.service - Jenkins Continuous Integration Server...
+░░ Subject: A start job for unit jenkins.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has begun execution.
+░░ 
+░░ The job identifier is 65287.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173928]: Running with Java 23 from /usr/lib/jvm/jdk-23.0.2-oracle-x64, which is not yet fully supported.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173928]: Run the command again with the --enable-future-java flag to enable preview support for future Java versions.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173928]: Supported Java versions are: [17, 21]
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173928]: See https://jenkins.io/redirect/java-support/ for more information.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Main process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecStart= process belonging to unit jenkins.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65287 and the job result is failed.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Scheduled restart job, restart counter is at 1.
+░░ Subject: Automatic restarting of a unit has been scheduled
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ Automatic restarting of the unit jenkins.service has been scheduled, as the result for
+░░ the configured Restart= setting for the unit.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Starting jenkins.service - Jenkins Continuous Integration Server...
+░░ Subject: A start job for unit jenkins.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has begun execution.
+░░ 
+░░ The job identifier is 65379.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173977]: Running with Java 23 from /usr/lib/jvm/jdk-23.0.2-oracle-x64, which is not yet fully supported.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173977]: Run the command again with the --enable-future-java flag to enable preview support for future Java versions.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173977]: Supported Java versions are: [17, 21]
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2173977]: See https://jenkins.io/redirect/java-support/ for more information.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Main process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecStart= process belonging to unit jenkins.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65379 and the job result is failed.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Scheduled restart job, restart counter is at 2.
+░░ Subject: Automatic restarting of a unit has been scheduled
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ Automatic restarting of the unit jenkins.service has been scheduled, as the result for
+░░ the configured Restart= setting for the unit.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Starting jenkins.service - Jenkins Continuous Integration Server...
+░░ Subject: A start job for unit jenkins.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has begun execution.
+░░ 
+░░ The job identifier is 65471.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174059]: Running with Java 23 from /usr/lib/jvm/jdk-23.0.2-oracle-x64, which is not yet fully supported.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174059]: Run the command again with the --enable-future-java flag to enable preview support for future Java versions.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174059]: Supported Java versions are: [17, 21]
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174059]: See https://jenkins.io/redirect/java-support/ for more information.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Main process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecStart= process belonging to unit jenkins.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:03 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65471 and the job result is failed.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Scheduled restart job, restart counter is at 3.
+░░ Subject: Automatic restarting of a unit has been scheduled
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ Automatic restarting of the unit jenkins.service has been scheduled, as the result for
+░░ the configured Restart= setting for the unit.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Starting jenkins.service - Jenkins Continuous Integration Server...
+░░ Subject: A start job for unit jenkins.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has begun execution.
+░░ 
+░░ The job identifier is 65563.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174110]: Running with Java 23 from /usr/lib/jvm/jdk-23.0.2-oracle-x64, which is not yet fully supported.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174110]: Run the command again with the --enable-future-java flag to enable preview support for future Java versions.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174110]: Supported Java versions are: [17, 21]
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174110]: See https://jenkins.io/redirect/java-support/ for more information.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Main process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecStart= process belonging to unit jenkins.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65563 and the job result is failed.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Scheduled restart job, restart counter is at 4.
+░░ Subject: Automatic restarting of a unit has been scheduled
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ Automatic restarting of the unit jenkins.service has been scheduled, as the result for
+░░ the configured Restart= setting for the unit.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Starting jenkins.service - Jenkins Continuous Integration Server...
+░░ Subject: A start job for unit jenkins.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has begun execution.
+░░ 
+░░ The job identifier is 65655.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174154]: Running with Java 23 from /usr/lib/jvm/jdk-23.0.2-oracle-x64, which is not yet fully supported.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174154]: Run the command again with the --enable-future-java flag to enable preview support for future Java versions.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174154]: Supported Java versions are: [17, 21]
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA jenkins[2174154]: See https://jenkins.io/redirect/java-support/ for more information.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Main process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ An ExecStart= process belonging to unit jenkins.service has exited.
+░░ 
+░░ The process' exit code is 'exited' and its exit status is 1.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:04 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65655 and the job result is failed.
+May 03 20:18:05 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Scheduled restart job, restart counter is at 5.
+░░ Subject: Automatic restarting of a unit has been scheduled
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ Automatic restarting of the unit jenkins.service has been scheduled, as the result for
+░░ the configured Restart= setting for the unit.
+May 03 20:18:05 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Start request repeated too quickly.
+May 03 20:18:05 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:05 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65747 and the job result is failed.
+May 03 20:18:16 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Start request repeated too quickly.
+May 03 20:18:16 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:16 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65839 and the job result is failed.
+May 03 20:18:43 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Start request repeated too quickly.
+May 03 20:18:43 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:18:43 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 65931 and the job result is failed.
+May 03 20:19:30 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Start request repeated too quickly.
+May 03 20:19:30 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:19:30 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 66023 and the job result is failed.
+May 03 20:20:09 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Start request repeated too quickly.
+May 03 20:20:09 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: jenkins.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit jenkins.service has entered the 'failed' state with result 'exit-code'.
+May 03 20:20:09 marcelo-victor-Vivobook-Go-E1504FA-E1504FA systemd[1]: Failed to start jenkins.service - Jenkins Continuous Integration Server.
+░░ Subject: A start job for unit jenkins.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit jenkins.service has finished with a failure.
+░░ 
+░░ The job identifier is 66206 and the job result is failed.
